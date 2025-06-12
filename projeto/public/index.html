@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gerador de Assinatura - Bravante 60 anos</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+  <link rel="icon" type="image/x-icon" href="./assets/favicon.png">
+
+  <style>
+    .gradient-bg {
+      background: linear-gradient(135deg, #96aa9e 0%, #94aca1 100%);
+    }
+    .download-btn {
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      background: linear-gradient(135deg, #629676 0%, #6F9685 100%);
+    }
+    .download-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    }
+    .download-btn:active {
+      transform: translateY(0);
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    input:focus {
+      border-color: #629676 !important;
+      box-shadow: 0 0 0 2px rgba(98, 150, 118, 0.2) !important;
+    }
+    .floating-label {
+      position: absolute;
+      pointer-events: none;
+      left: 12px;
+      top: 10px;
+      transition: 0.2s ease all;
+      color: #9CA3AF;
+      font-size: 0.875rem;
+    }
+    input:focus ~ .floating-label,
+    input:not(:placeholder-shown) ~ .floating-label {
+      top: -8px;
+      left: 8px;
+      font-size: 0.75rem;
+      background: white;
+      padding: 0 4px;
+      color: #629676;
+    }
+    @media (max-width: 767px) {
+      .mobile-image {
+        height: 150px;
+        object-position: center;
+      }
+      .mobile-padding {
+        padding: 1.5rem;
+      }
+    }
+
+    /* Custom dropdown styles */
+    .custom-select {
+      position: relative;
+      width: 100%;
+    }
+    .custom-select select {
+      display: none;
+    }
+    .select-selected {
+      background-color: white;
+      border-radius: 0.5rem;
+      border: 1px solid #d1d5db;
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+      user-select: none;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      position: relative;
+      transition: all 0.3s ease;
+    }
+    .select-selected:after {
+      position: absolute;
+      content: "";
+      top: 50%;
+      right: 15px;
+      width: 0;
+      height: 0;
+      border: 6px solid transparent;
+      border-color: #9ca3af transparent transparent transparent;
+      transform: translateY(-50%);
+      transition: all 0.3s ease;
+    }
+    .select-selected.select-arrow-active:after {
+      transform: translateY(-50%) rotate(180deg);
+      border-color: #629676 transparent transparent transparent;
+    }
+    .select-selected:hover {
+      border-color: #629676;
+    }
+    .select-items {
+      position: absolute;
+      background-color: white;
+      top: 100%;
+      left: 0;
+      right: 0;
+      z-index: 99;
+      border-radius: 0.5rem;
+      border: 1px solid #d1d5db;
+      margin-top: 0.25rem;
+      max-height: 200px;
+      overflow-y: auto;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-10px);
+      transition: all 0.3s ease;
+    }
+    .select-items div {
+      padding: 0.75rem 1rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .select-items div:hover {
+      background-color: #f3f4f6;
+      color: #629676;
+    }
+    .select-items div.selected {
+      background-color: #629676;
+      color: white;
+    }
+    .select-show {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+    .select-hide {
+      display: none;
+    }
+  </style>
+</head>
+
+<body class="font-['Open_Sans'] gradient-bg min-h-screen flex items-center justify-center p-4">
+  <div class="w-full max-w-6xl bg-white rounded-3xl shadow-xl overflow-hidden">
+
+    <!-- Mobile Image -->
+    <div class="md:hidden w-full">
+      <img src="/assets/banner2.jpg" alt="Bravante 60 anos" class="w-full h-full object-cover mobile-image">
+    </div>
+
+    <div class="flex flex-col md:flex-row">
+      <!-- Form Side -->
+      <div class="w-full md:w-1/2 p-6 md:p-8 lg:p-12 flex flex-col mobile-padding">
+        <div class="text-center mb-6 md:mb-8">
+          <img src="/assets/GrupoBravanteLogo.png" alt="Bravante Logo" class="mx-auto h-12 md:h-16">
+          <h1 class="text-xl md:text-2xl font-semibold text-gray-600 mt-3 md:mt-4">Gerador de Assinaturas</h1>
+          <p class="text-xs md:text-sm text-gray-500 mt-1">Celebrando 60 anos</p>
+        </div>
+
+        <form id="signatureForm" class="flex-1 flex flex-col">
+          <div class="space-y-4 md:space-y-6">
+            <!-- Name -->
+            <div class="relative">
+              <input id="signName" class="w-full px-4 py-2 md:py-3 border border-gray-300 rounded-lg focus:outline-none text-gray-700 placeholder-transparent" type="text" placeholder="Insira seu nome e sobrenome" required>
+              <label class="floating-label">Nome completo</label>
+            </div>
+            
+            <!-- Sector Dropdown -->
+            <div class="custom-select" style="width:100%;">
+              <div class="select-selected" id="signSectorDropdown">
+                Selecione seu setor
+              </div>
+              <div class="select-items select-hide">
+                <div>Tecnologia da Informação</div>
+                <div>Gente & Gestão</div>
+                <div>Administrativo</div>
+                <div>Jurídico</div>
+                <div>Financeiro</div>
+                <div>Comunicação & Marketing</div>
+                <div>Operações</div>
+                <div>Comercial</div>
+                <div>Fiscal</div>
+                <div>QSMS</div>
+                <div>Projetos</div>
+                <div>Diretor Hidroclean</div>
+                <div>Offshore</div>
+              </div>
+              <input type="hidden" id="signSector" value="" required>
+            </div>
+
+            <!-- Email -->
+            <div class="relative">
+              <input id="signEmail" class="w-full px-4 py-2 md:py-3 border border-gray-300 rounded-lg focus:outline-none text-gray-700 placeholder-transparent" type="email" placeholder="Insira seu e-mail corporativo" required>
+              <label class="floating-label">E-mail corporativo</label>
+            </div>
+            <!-- Phone -->
+            <div class="relative">
+              <input id="signPhone" class="w-full px-4 py-2 md:py-3 border border-gray-300 rounded-lg focus:outline-none text-gray-700 placeholder-transparent" type="tel" placeholder="(xx) XXXXX-XXXX">
+              <label class="floating-label">Telefone (opcional)</label>
+            </div>
+          </div>
+
+          <div class="mt-auto pt-6 md:pt-8 text-center">
+            <button type="button" onclick="trySubmit()" class="download-btn text-white px-6 py-3 md:px-8 md:py-4 rounded-full font-medium flex items-center justify-center mx-auto text-sm md:text-base">
+              <i class="fas fa-download mr-2"></i> Gerar Assinatura
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Image Side -->
+      <div class="hidden md:block md:w-1/2 bg-gray-100 relative overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-b from-[#629676] to-[#6F9685] opacity-20"></div>
+        <img src="/assets/banner2.jpg" alt="Bravante 60 anos" class="w-full h-full object-cover">
+        <div class="absolute bottom-0 left-0 right-0 p-6 lg:p-8 text-white text-center">
+          <h2 class="text-xl lg:text-2xl font-bold mb-1 lg:mb-2">60 anos</h2>
+          <p class="text-xs lg:text-sm opacity-90">Construindo o futuro com tradição</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    console.log("Start");
+
+    // Custom dropdown functionality
+    document.addEventListener("DOMContentLoaded", function() {
+      const dropdown = document.querySelector(".custom-select");
+      const selected = document.querySelector(".select-selected");
+      const items = document.querySelector(".select-items");
+      const options = items.querySelectorAll("div");
+      const hiddenInput = document.getElementById("signSector");
+      
+      // Click handler for dropdown toggle
+      selected.addEventListener("click", function(e) {
+        e.stopPropagation();
+        closeAllSelect(this);
+        items.classList.toggle("select-hide");
+        items.classList.toggle("select-show");
+        this.classList.toggle("select-arrow-active");
+      });
+      
+      // Click handler for options
+      options.forEach(option => {
+        option.addEventListener("click", function() {
+          const selectedText = this.textContent;
+          selected.textContent = selectedText;
+          hiddenInput.value = selectedText;
+          
+          // Remove selected class from all options
+          options.forEach(opt => opt.classList.remove("selected"));
+          // Add selected class to clicked option
+          this.classList.add("selected");
+          
+          items.classList.remove("select-show");
+          items.classList.add("select-hide");
+          selected.classList.remove("select-arrow-active");
+        });
+      });
+      
+      // Close dropdown when clicking outside
+      document.addEventListener("click", function() {
+        items.classList.add("select-hide");
+        items.classList.remove("select-show");
+        selected.classList.remove("select-arrow-active");
+      });
+      
+      function closeAllSelect(elmnt) {
+        const allSelectItems = document.querySelectorAll(".select-items");
+        const allSelected = document.querySelectorAll(".select-selected");
+        
+        allSelectItems.forEach(item => {
+          if (elmnt !== item && elmnt !== selected) {
+            item.classList.add("select-hide");
+            item.classList.remove("select-show");
+          }
+        });
+        
+        allSelected.forEach(sel => {
+          if (elmnt !== sel) {
+            sel.classList.remove("select-arrow-active");
+          }
+        });
+      }
+    });
+
+    const inputFields = document.querySelectorAll('input:not(#signSector)');
+
+    inputFields.forEach((inputField, index) => {
+      inputField.addEventListener("keydown", function (event) {
+        if (event.key === "Enter") {
+          event.preventDefault();
+          const nextInput = inputFields[index + 1];
+          if (nextInput) nextInput.focus();
+          else trySubmit();
+        }
+      });
+    });
+
+    function formHasErrors() {
+  const name = document.getElementById('signName').value.trim();
+  const sector = document.getElementById('signSector').value.trim();
+  const email = document.getElementById('signEmail').value.trim();
+
+  if (!name || !sector || !email) {
+    alert("Não podem haver campos vazios.");
+    return true;
+  }
+
+  if (name.length > 30) {
+    alert("O nome deve ter 30 caracteres ou menos.");
+    return true;
+  }
+
+  if (!email.includes("@bravante.com.br")) {
+    alert("O email deve ser @bravante.com.br");
+    return true;
+  }
+
+  return false;
+}
+
+
+    async function trySubmit() {
+      if (formHasErrors()) return;
+
+      const data = {
+        signName: document.getElementById('signName').value,
+        signSector: document.getElementById('signSector').value,
+        signEmail: document.getElementById('signEmail').value,
+        signPhone: document.getElementById('signPhone').value
+      };
+
+      try {
+        const response = await fetch("/signaturegenerator", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data)
+        });
+
+        if (!response.ok) throw new Error("Erro na solicitação");
+
+        const imageBlob = await response.blob();
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(imageBlob);
+        link.download = 'signature.png';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      } catch (error) {
+        console.error("Erro ao enviar ou processar solicitação", error);
+      }
+    }
+
+    // Máscara de telefone
+    document.getElementById('signPhone').addEventListener('input', function (e) {
+      let value = e.target.value.replace(/\D/g, '');
+      if (value.length > 2) value = `(${value.substring(0, 2)}) ${value.substring(2)}`;
+      if (value.length > 10) value = `${value.substring(0, 10)}-${value.substring(10, 14)}`;
+      e.target.value = value;
+    });
+
+    // Melhor experiência mobile
+    inputFields.forEach(input => {
+      input.addEventListener('focus', () => {
+        window.scrollTo(0, 0);
+        document.body.style.zoom = "100%";
+      });
+    });
+
+    console.log("End");
+  </script>
+</body>
+</html>
